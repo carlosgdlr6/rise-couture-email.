@@ -20,15 +20,14 @@ function saveImg(id,name){const a=document.createElement('a');a.href=document.ge
 async function copyMail(){const el=document.getElementById('mail');const range=document.createRange();range.selectNodeContents(el);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);let ok=false;try{ok=document.execCommand('copy')}catch(e){} document.getElementById('status').textContent=ok?'Diseño copiado. Pégalo en Gmail. Si faltan las fotos, insértalas con los archivos descargados.':'El diseño está seleccionado: pulsa Ctrl+C y después Ctrl+V en Gmail.';}
 </script>
 <script>
-async function loadB64(parts) {
-  const texts = await Promise.all(parts.map(p => fetch(p).then(r => r.text())));
-  return 'data:image/webp;base64,' + texts.join('');
+async function loadB64(file) {
+  return 'data:image/webp;base64,' + await fetch(file).then(r => r.text());
 }
 async function loadAssets() {
   const [logo, tees, cap] = await Promise.all([
-    loadB64(['assets/logo-1.txt','assets/logo-2.txt']),
-    loadB64(['assets/tees-1.txt','assets/tees-2.txt','assets/tees-3.txt','assets/tees-4.txt']),
-    loadB64(['assets/cap-1.txt'])
+    loadB64('assets/logo.txt'),
+    loadB64('assets/tees.txt'),
+    loadB64('assets/cap.txt')
   ]);
   document.getElementById('logo').src = logo;
   document.getElementById('logo-footer').src = logo;
